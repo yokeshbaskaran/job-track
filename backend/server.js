@@ -10,7 +10,7 @@ const routes = require("./router/jobRoutes");
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", ""],
     credentials: true,
   })
 );
@@ -26,6 +26,18 @@ mongoose
   });
 
 app.use("/api", routes);
+
+// --------------------Deployment---------------
+
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+});
+
+//--------------------Deployment---------------
 
 const PORT = 3001;
 app.listen(PORT, () => {
