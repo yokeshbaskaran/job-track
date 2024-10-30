@@ -7,7 +7,7 @@ export function useJobs() {
   return useContext(JobContext);
 }
 
-export const API_URL = "https://job-track-2gja.onrender.com";
+export const API_URL = "https://job-track-2gja.onrender.com/api";
 // export const API_URL = "http://localhost:3001/api";
 
 export const JobContextProvider = ({ children }) => {
@@ -20,19 +20,23 @@ export const JobContextProvider = ({ children }) => {
   }, [dataChanged]);
 
   const getCompanyList = async () => {
-    const response = await fetch(API_URL + "/company", {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    try {
+      const response = await fetch(API_URL + "/company", {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      // console.log(data);
-      setCompanyDetails(data);
-    } else {
-      console.log("Fetch Error!");
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data);
+        setCompanyDetails(data);
+      } else {
+        console.log("Fetch Error!", response.status);
+      }
+    } catch (error) {
+      console.log("Fetch CompanyList Error" + error.message);
     }
   };
 
