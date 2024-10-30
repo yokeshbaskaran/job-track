@@ -7,7 +7,8 @@ export function useJobs() {
   return useContext(JobContext);
 }
 
-export const API_URL = "http://localhost:3001/api";
+export const API_URL = "https://job-track-2gja.onrender.com";
+// export const API_URL = "http://localhost:3001/api";
 
 export const JobContextProvider = ({ children }) => {
   const [companyDetails, setCompanyDetails] = useState([]);
