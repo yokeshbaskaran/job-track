@@ -10,7 +10,7 @@ const routes = require("./router/jobRoutes");
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", ""],
+    origin: ["http://localhost:5173", "https://job-track-2gja.onrender.com"],
     credentials: true,
   })
 );
