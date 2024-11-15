@@ -25,14 +25,13 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await Admin.find({ email, password });
+    const user = await Admin.findOne({ email, password });
 
     if (user) {
       jwt.sign({ ...user }, process.env.SECRET_TOKEN, {}, (err, token) => {
         if (err) {
           console.log("Token is required");
         }
-
         res.cookie("access_token", token).json({ msg: "User logined!" });
       });
     } else {
@@ -172,6 +171,17 @@ router.put("/company/:id", async (req, res) => {
     }
   } catch (error) {
     console.log("Update Error!" + error.message);
+  }
+});
+
+router.delete("/company/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Company.deleteOne({ _id: id });
+    res.status(200).json({ msg: "Company Deleted!" });
+  } catch (error) {
+    console.log("Error" + error.message);
   }
 });
 

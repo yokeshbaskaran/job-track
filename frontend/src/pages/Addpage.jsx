@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { API_URL, useJobs } from "../context/JobContext";
 import { useNavigate } from "react-router-dom";
+import { Popup } from "../components/Popup";
 
 const Addpage = () => {
   const [appliedDate, setAppliedDate] = useState("");
@@ -13,6 +14,7 @@ const Addpage = () => {
   const [platform, setPlatform] = useState("");
   const [notes, setNotes] = useState("");
 
+  const [isPopup, setIsPopup] = useState(false);
   const navigate = useNavigate();
   const { dataChanged, setDataChanged } = useJobs();
 
@@ -50,8 +52,13 @@ const Addpage = () => {
       if (response.ok) {
         const data = await response.json();
         if (data) {
-          navigate("/");
-          setDataChanged(!dataChanged);
+          setIsPopup(!isPopup);
+
+          setTimeout(() => {
+            navigate("/");
+            setDataChanged(!dataChanged);
+            setIsPopup(!isPopup);
+          }, 1000);
         }
       } else {
         console.log("Company not added");
@@ -220,6 +227,8 @@ const Addpage = () => {
           </button>
         </div>
       </form>
+
+      {isPopup && <Popup text="Company added" color="green" />}
     </>
   );
 };

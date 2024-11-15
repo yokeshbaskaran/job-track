@@ -38,3 +38,9 @@ th {
   overflow: hidden;
   resize: none;
 }
+
+.popup {
+  position: fixed;
+  top: 10%;
+  right: 1%;
+}

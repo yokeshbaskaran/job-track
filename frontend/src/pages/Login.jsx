@@ -1,35 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../context/JobContext";
+import { Popup } from "../components/Popup";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPopup, setIsPopup] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email && password) {
-      const data = { email, password };
+    try {
+      if (email && password) {
+        const data = { email, password };
 
-      const response = await fetch(API_URL + "/login", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+        const response = await fetch(API_URL + "/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        });
 
-      if (response.ok) {
-        navigate("/");
-      } else {
-        alert("Wrong credentails!");
+        if (response.ok) {
+          setIsPopup(!isPopup);
+
+          setTimeout(() => {
+            navigate("/");
+            setIsPopup(!isPopup);
+          }, 1000);
+        } else {
+          alert("Wrong credentials");
+        }
       }
-    } else {
-      alert("Enter credentails!");
+    } catch (error) {
+      console.log("Error!" + error.message);
     }
   };
 
@@ -64,6 +73,8 @@ const Login = () => {
           Login
         </button>
       </form>
+
+      {isPopup && <Popup text="User Logined" color="green" />}
     </>
   );
 };
